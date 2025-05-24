@@ -55,7 +55,7 @@ The **Business Process Model** illustrates how different actors interact within 
 ![ERD](Phase%20II/diagram.svg)
 
 ---
-# Creating a Pluggable Database (PDB) in Oracle
+# Phase 4: Creating a Pluggable Database (PDB) in Oracle
 
 ## Step to Create a Pluggable Database (PDB)
 
@@ -81,7 +81,7 @@ _db\');
 
 ---
 
-##  Phase 5: Oracle Enterprise Manager (OEM) Setup
+##  Phase 4: Oracle Enterprise Manager (OEM) Setup
 
 We use **Oracle Enterprise Manager** to manage the pluggable database created for the system. OEM helps monitor user sessions, resource usage, and object access in real-time.
 
@@ -93,28 +93,43 @@ We use **Oracle Enterprise Manager** to manage the pluggable database created fo
 ![OEM](Phase%20IV/oem.jpg)
 
 ---
-##  Phase 3: Table Creation (DDL)
+##  Phase 5: Table Creation (DDL)
 
 In this step, the main database structure is created using SQL `CREATE TABLE` commands. Each table is normalized, and appropriate constraints are used.
 
-### Example: `Guests` Table
+### Some of my  Tables
 ```sql
-CREATE TABLE Guests (
-  GuestID NUMBER PRIMARY KEY,
-  Name VARCHAR2(100),
-  Contact VARCHAR2(15),
-  Email VARCHAR2(100)
-);
-```
+C:\WINDOWS\system32\cmd.exe - sqlplus irabaruta/irabaruta@localhost:1521/MON_27463_IRABARUTA_HOTELMS_DB 
+2 BookingID NUMBER PRIMARY KEY, 
+3 GuestID NUMBER REFERENCES Guests (GuestID), 
+4 RoomID NUMBER REFERENCES Rooms (RoomID), 
+5 EmployeeID NUMBER REFERENCES Employees (EmployeeID), 
+6 CheckInDate DATE, 
+7 CheckoutDate DATE 
+8); 
+Table created. 
+SQL> 
+SQL> Payments Table 
 
-### Example: `Rooms` Table
-```sql
-CREATE TABLE Rooms (
-  RoomID NUMBER PRIMARY KEY,
-  Type VARCHAR2(50),
-  Price NUMBER,
-  Status VARCHAR2(20)
-);
+SQL> 
+SQL> Services Table 
+
+SQL> CREATE TABLE Services ( 
+2 ServiceID NUMBER PRIMARY KEY, 
+3 ServiceType VARCHAR2(50), 
+4 Cost NUMBER (8,2) 
+5); 
+
+Table created. 
+
+SQL> 
+SQL> ServiceRequests Table 
+SQL> CREATE TABLE ServiceRequests ( 
+2 RequestID NUMBER PRIMARY KEY, 
+3 GuestID NUMBER REFERENCES Guests (GuestID), 
+4 ServiceID NUMBER REFERENCES Services (ServiceID), 
+5 EmployeeID NUMBER REFERENCES Employees (EmployeeID), 
+6 RequestDate DATE
 ```
 
 ### Other tables created:
@@ -126,23 +141,43 @@ CREATE TABLE Rooms (
 
 These table definitions ensure data integrity and support the full functionality of the system.
 
-![Screenshot](screenshots/table_creation.png)
+![table](Phase%20V/createTable.jpg)
 
 ---
 
-##  Phase 4: Data Insertion (DML)
+##  Phase 5: Data Insertion (DML)
 
 We insert realistic and meaningful data into all tables to support testing and actual usage.
 
-### Example Insert:
+### Example Insert in Rooms :
 ```sql
-INSERT INTO Rooms VALUES (112, 'Single', 48000, 'Available');
-```
 
-### Another Example:
-```sql
-INSERT INTO Guests VALUES (1, 'John Doe', '0788000001', 'john@example.com');
+SQL> INSERT INTO Rooms VALUES (102, 'Double', 70000, 'Booked"); INSERT INTO Rooms VALUES (102, 'Double', 70000, 'Booked') 
+ERROR at line 1: 
+ORA-00001: unique constraint (IRABARUTA.SYS_C008226) violated 
+SQL> INSERT INTO Rooms VALUES (103, 'Suite', 150000, 'Available'); 
+1 row created. 
+SQL> INSERT INTO Rooms VALUES (184, 'Double', 75000, 'Maintenance'); 
+1 row created. 
+SQL> INSERT INTO Rooms VALUES (105, 'Single', 47000, 'Available'); 
+1 row created. 
+SQL> INSERT INTO Rooms VALUES (106, 'Suite', 160000, 'Booked'); 
+1 row created. 
+SQL> INSERT INTO Rooms VALUES (107, 'Single', 46000, 'Available'); 
+1 row created. 
+SQL> INSERT INTO Rooms VALUES (108, 'Double', 73000, 'Booked'); 
+1 row created. 
+SQL> INSERT INTO Rooms VALUES (109, 'Suite', 155000, 'Available'); 
+1 row created. 
+SQL> INSERT INTO Rooms VALUES (110, 'Double', 72000, 'Available"); 
+1 row created. 
+SQL> 
+다 
+X
 ```
+![table](Phase%20V/insert.jpg)
+
+---
 
 These data samples allow for verifying procedures, relationships, and triggers through meaningful test cases.
 
