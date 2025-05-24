@@ -90,7 +90,7 @@ We use **Oracle Enterprise Manager** to manage the pluggable database created fo
 - Assigning admin privileges
 - Managing session stats, performance, and user activities
 
-[ERD](Phase%20IV/oem.jpg)
+![OEM](Phase%20IV/oem.jpg)
 
 ---
 ##  Phase 3: Table Creation (DDL)
