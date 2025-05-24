@@ -52,7 +52,7 @@ The **Business Process Model** illustrates how different actors interact within 
 - **Manager**: Views reports and audits
 - **System**: Automates billing and restrictions
 
-![ERD](Phase%20II/diagram.svg)
+![ERD](Phase%20II/diagram.png)
 
 ---
 # Phase 4: Creating a Pluggable Database (PDB) in Oracle
