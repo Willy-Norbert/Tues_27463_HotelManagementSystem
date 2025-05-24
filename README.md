@@ -1,39 +1,140 @@
-# Hotel Management System – Oracle PL/SQL Capstone Project
+# 🏨 Hotel Management System – Oracle PL/SQL Capstone Project
 
-## 📘 Project Description
+## 📘 Project Overview
 
-The **Hotel Management System** is designed to solve common issues in hotels, guesthouses, and resorts that rely on manual booking systems. Such systems often suffer from overbooking, billing errors, poor service tracking, and data mismanagement. This project leverages **Oracle PL/SQL** to create an automated system that handles:
+The **Hotel Management System** solves the challenges posed by manual reservation systems in hotels, guesthouses, and resorts. Traditional systems often face issues like double-booking, lost records, inaccurate billing, and a lack of service tracking. This project, built with **Oracle PL/SQL**, automates and secures all essential operations such as:
 
-- Room bookings
-- Guest information
-- Payments and billing
-- Service requests
-- Employee tracking
-- Security and auditing
+- Guest registration and room reservations
+- Employee and service management
+- Booking and payment handling
+- Restriction of unauthorized actions during business rules (e.g., holidays or weekdays)
+- Activity auditing and reporting
 
-The system improves efficiency, minimizes human error, and ensures secure, accurate record-keeping. The solution integrates multiple PL/SQL features such as **procedures, triggers, compound triggers, exception handling, and audit logs**.
-
-The following steps describe the implementation of the system in detail, including all SQL code and the expected result of each step.
+This system utilizes a **relational database model** with multiple tables, business logic via PL/SQL, and role-based operations. Below is the complete design and implementation of the system.
 
 ---
 
-## ✅ Enable DBMS Output
+## 🔷 Phase 1: Entity Relationship Diagram (ERD)
 
-To display output messages from PL/SQL blocks, especially from `DBMS_OUTPUT.PUT_LINE`, we must enable server output.
+The **ERD** visually models the structure of the database. It shows how entities like Guests, Bookings, Payments, and Rooms relate to each other.
+
+### Key Entities:
+- **Guests**: Stores guest details (ID, name, contact, email)
+- **Rooms**: Room types, price, and availability
+- **Bookings**: Guest-room assignment and duration
+- **Payments**: Amount, method, and date linked to bookings
+- **Employees**: Hotel staff information
+- **Services**: Optional services requested by guests
+- **Service Requests**: Tracks who requested what and when
+
+### Relationships:
+- A **Guest** can make multiple **Bookings**
+- A **Booking** is linked to one **Room**
+- A **Payment** is tied to a **Booking**
+- An **Employee** manages multiple **Bookings**
+- Guests may make multiple **Service Requests**
+
+![ERD](screenshots/erd_diagram.png)
+
+---
+
+## 🔷 Phase 2: BPMN Diagram (Business Process Model)
+
+The **Business Process Model** illustrates how different actors interact within the system to accomplish hotel operations. Using **BPMN swimlanes**, the flow includes reservation handling, billing, auditing, and report generation.
+
+### Actors:
+- **Guest**: Initiates booking, requests services, makes payment
+- **Receptionist**: Confirms bookings, updates records
+- **Manager**: Views reports and audits
+- **System**: Automates billing and restrictions
+
+![BPMN](screenshots/bpmn_diagram.png)
+
+---
+
+## 🔷 Phase 3: Table Creation (DDL)
+
+In this step, the main database structure is created using SQL `CREATE TABLE` commands. Each table is normalized, and appropriate constraints are used.
+
+### Example: `Guests` Table
+```sql
+CREATE TABLE Guests (
+  GuestID NUMBER PRIMARY KEY,
+  Name VARCHAR2(100),
+  Contact VARCHAR2(15),
+  Email VARCHAR2(100)
+);
+```
+
+### Example: `Rooms` Table
+```sql
+CREATE TABLE Rooms (
+  RoomID NUMBER PRIMARY KEY,
+  Type VARCHAR2(50),
+  Price NUMBER,
+  Status VARCHAR2(20)
+);
+```
+
+### Other tables created:
+- Bookings
+- Payments
+- Employees
+- Services
+- ServiceRequests
+
+These table definitions ensure data integrity and support the full functionality of the system.
+
+![Screenshot](screenshots/table_creation.png)
+
+---
+
+## 🔷 Phase 4: Data Insertion (DML)
+
+We insert realistic and meaningful data into all tables to support testing and actual usage.
+
+### Example Insert:
+```sql
+INSERT INTO Rooms VALUES (112, 'Single', 48000, 'Available');
+```
+
+### Another Example:
+```sql
+INSERT INTO Guests VALUES (1, 'John Doe', '0788000001', 'john@example.com');
+```
+
+These data samples allow for verifying procedures, relationships, and triggers through meaningful test cases.
+
+![Screenshot](screenshots/data_insertion.png)
+
+---
+
+## 🔷 Phase 5: Oracle Enterprise Manager (OEM) Setup
+
+We use **Oracle Enterprise Manager** to manage the pluggable database created for the system. OEM helps monitor user sessions, resource usage, and object access in real-time.
+
+### Setup includes:
+- Creating database with naming format: `mon_27463_yourname_projectname_db`
+- Assigning admin privileges
+- Managing session stats, performance, and user activities
+
+![Screenshot](screenshots/oracle_enterprise_manager.png)
+
+---
+
+## 🔷 Phase 6: Enable DBMS Output
 
 ```sql
 SET SERVEROUTPUT ON;
 ```
 
-This command ensures that the messages printed within procedures and exception blocks will appear in the SQL Developer output window.
+This command is essential for displaying output from `DBMS_OUTPUT.PUT_LINE` used in stored procedures and triggers.
 
 ![Screenshot](screenshots/step0_enable_output.png)
 
 ---
 
-## ✅ Step 1: Add Gender Column to the Guests Table
-
-In this step, we extend the `Guests` table by adding a new column called `Gender`. Since this alteration should only occur once, we use dynamic SQL with exception handling to avoid errors if the column already exists.
+## 🔷 Step 1: Add Gender Column to Guests Table
 
 ```sql
 BEGIN
@@ -49,19 +150,13 @@ END;
 /
 ```
 
-This ensures the database schema includes gender information while maintaining system stability during repeated deployments.
+This adds gender data for each guest and handles the "column already exists" error safely.
 
 ![Screenshot](screenshots/step1_alter_table.png)
 
 ---
 
-## ✅ Step 2: Perform Sample DML Operations
-
-To test how the system handles data manipulation, we perform the following actions:
-
-- Update a guest's contact information
-- Delete a payment record
-- Insert a new room with a unique ID
+## 🔷 Step 2: Perform Sample DML Operations
 
 ```sql
 UPDATE Guests SET Contact = '0788001121' WHERE GuestID = 1;
@@ -69,15 +164,13 @@ DELETE FROM Payments WHERE PaymentID = 10;
 INSERT INTO Rooms VALUES (112, 'Single', 48000, 'Available');
 ```
 
-These operations verify that table structures are functioning correctly and constraints are properly set.
+These operations simulate real-life changes and validate that the tables are functioning properly.
 
 ![Screenshot](screenshots/step2_dml_operations.png)
 
 ---
 
-## ✅ Step 3: Create Procedure to Summarize Guest Bookings and Payments
-
-We implement a stored procedure called `GetGuestSummary` that accepts a guest ID and displays the total number of bookings and the total payment amount made by that guest.
+## 🔷 Step 3: Procedure to Summarize Guest Bookings and Payments
 
 ```sql
 CREATE OR REPLACE PROCEDURE GetGuestSummary (
@@ -102,23 +195,15 @@ END;
 /
 ```
 
-This procedure is critical for generating personalized billing summaries and reports for guests.
+This provides a summarized financial and booking report for each guest.
 
 ![Screenshot](screenshots/step3_procedure_summary.png)
 
 ---
 
-## ✅ Step 4: Create Holidays Table
-
-We now define a `Holidays` table to record national holidays. This table will later be referenced in a trigger to restrict database operations on holidays.
+## 🔷 Step 4: Holidays Table
 
 ```sql
-BEGIN
-  EXECUTE IMMEDIATE 'DROP TABLE Holidays CASCADE CONSTRAINTS';
-EXCEPTION WHEN OTHERS THEN NULL;
-END;
-/
-
 CREATE TABLE Holidays (
   HolidayDate DATE PRIMARY KEY,
   Description VARCHAR2(100)
@@ -129,23 +214,15 @@ INSERT INTO Holidays VALUES (TO_DATE('2025-05-23', 'YYYY-MM-DD'), 'National Hero
 COMMIT;
 ```
 
-This ensures our system can adapt to calendar-based restrictions.
+Used to restrict operations on holidays.
 
 ![Screenshot](screenshots/step4_create_holidays.png)
 
 ---
 
-## ✅ Step 5: Create Audit_Log Table
-
-To track system activity, we introduce an `Audit_Log` table that stores who performed what operation, on which table, and whether it was allowed.
+## 🔷 Step 5: Create Audit_Log Table
 
 ```sql
-BEGIN
-  EXECUTE IMMEDIATE 'DROP TABLE Audit_Log CASCADE CONSTRAINTS';
-EXCEPTION WHEN OTHERS THEN NULL;
-END;
-/
-
 CREATE TABLE Audit_Log (
   AuditID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
   UserName VARCHAR2(50),
@@ -156,15 +233,13 @@ CREATE TABLE Audit_Log (
 );
 ```
 
-This table is essential for accountability and system monitoring.
+This table stores operation tracking information for auditing and security.
 
 ![Screenshot](screenshots/step5_create_audit_log.png)
 
 ---
 
-## ✅ Step 6: Create Audit Logging Procedure
-
-We implement a procedure called `log_audit_action` to simplify the process of writing entries into the audit log. This uses an autonomous transaction to ensure audit logs are saved even if the calling transaction fails.
+## 🔷 Step 6: Procedure for Audit Logging
 
 ```sql
 CREATE OR REPLACE PROCEDURE log_audit_action (
@@ -182,15 +257,13 @@ END;
 /
 ```
 
-This procedure improves code reuse and makes auditing consistent.
+A reusable module to write logs.
 
 ![Screenshot](screenshots/step6_audit_procedure.png)
 
 ---
 
-## ✅ Step 7: Create Trigger to Restrict Operations on Weekdays and Holidays
-
-We create a trigger that blocks operations on the `Guests` table by a specific user (`IRABARUTA`) during weekdays and on public holidays. It also logs the action.
+## 🔷 Step 7: Trigger for Restricting Weekday and Holiday Access
 
 ```sql
 CREATE OR REPLACE TRIGGER trg_block_weekday_holiday_ops
@@ -217,15 +290,13 @@ END;
 /
 ```
 
-This helps enforce business rules and improve data security.
+This prevents unauthorized changes based on rules.
 
 ![Screenshot](screenshots/step7_trigger_restriction.png)
 
 ---
 
-## ✅ Step 8: Compound Trigger for Multi-row Insert Audit on Payments
-
-We use a compound trigger to audit multiple inserts into the `Payments` table in a single transaction, storing all relevant logs after all rows are processed.
+## 🔷 Step 8: Compound Trigger for Multi-row Audit
 
 ```sql
 CREATE OR REPLACE TRIGGER trg_multirow_audit
@@ -272,15 +343,13 @@ END;
 /
 ```
 
-This demonstrates advanced PL/SQL auditing techniques.
+Used for auditing multi-row inserts efficiently.
 
 ![Screenshot](screenshots/step8_compound_trigger.png)
 
 ---
 
-## ✅ Step 9: Test GetGuestSummary Procedure
-
-We now run the stored procedure to display booking and payment details for a guest.
+## 🔷 Step 9: Run Summary Procedure
 
 ```sql
 BEGIN
@@ -289,15 +358,13 @@ END;
 /
 ```
 
-The output confirms that the procedure works and aggregates data correctly.
+This confirms the working of your reporting procedure.
 
 ![Screenshot](screenshots/step9_test_summary.png)
 
 ---
 
-## ✅ Step 10: Test INSERT Blocking Logic
-
-Here we test whether the trigger blocks or allows an insert depending on the user and the day.
+## 🔷 Step 10: Test Trigger Blocking
 
 ```sql
 BEGIN
@@ -305,42 +372,39 @@ BEGIN
   VALUES (99, 'Blocked User', '0700000000', 'block@example.com');
 END;
 /
-
-BEGIN
-  INSERT INTO Guests (GuestID, Name, Contact, Email)
-  VALUES (991, 'Blocked Usera', '070000000', 'blo1ck@example.com');
-END;
-/
 ```
 
-This validates whether system rules are being enforced correctly.
+Checks if weekday/holiday restrictions apply.
 
 ![Screenshot](screenshots/step10_test_insert.png)
 
 ---
 
-## ✅ Step 11: View Audit Log Records
-
-Finally, we view the contents of the audit log to see all operations tracked by the system.
+## 🔷 Step 11: View Audit Logs
 
 ```sql
 SELECT * FROM Audit_Log ORDER BY ActionDate DESC;
 ```
 
-This gives us a complete log of who performed what actions and whether they were allowed.
+Used to review all user activity and determine whether access was allowed or denied.
 
 ![Screenshot](screenshots/step11_audit_log.png)
 
 ---
 
-## ✅ Conclusion
+## ✅ Final Notes
 
-This project implements a full hotel management system with automated record keeping, restricted access policies, and detailed audit logging. It demonstrates best practices in database design and PL/SQL development by combining:
+This project combines PL/SQL concepts into a real-world hotel automation system. Key concepts demonstrated include:
 
-- Stored procedures
-- Advanced triggers
-- Compound triggers
-- Exception handling
-- Autonomous transactions
+- Relational database modeling (ERD)
+- Business process modeling (BPMN)
+- Stored procedures and triggers
+- Compound triggers and auditing
+- Oracle Enterprise Manager usage
+- Data integrity and user restriction policies
 
-The result is a secure, reliable, and efficient system for real-world hotel operations.
+This solution is scalable, secure, and aligned with modern enterprise requirements.
+
+> "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters." — *Colossians 3:23*
+
+---
