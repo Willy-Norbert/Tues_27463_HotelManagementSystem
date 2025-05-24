@@ -1,6 +1,9 @@
-# 🏨 Hotel Management System – Oracle PL/SQL Capstone Project
+# Hotel Management System – Oracle PL/SQL Capstone Project
 
-## 📘 Project Overview
+**Student Name:** IRABARUTA Willy Norbert  
+**Student ID:** 27463
+
+## Project Overview
 
 The **Hotel Management System** solves the challenges posed by manual reservation systems in hotels, guesthouses, and resorts. Traditional systems often face issues like double-booking, lost records, inaccurate billing, and a lack of service tracking. This project, built with **Oracle PL/SQL**, automates and secures all essential operations such as:
 
@@ -14,7 +17,7 @@ This system utilizes a **relational database model** with multiple tables, busin
 
 ---
 
-## 🔷 Phase 1: Entity Relationship Diagram (ERD)
+##  Phase 1: Entity Relationship Diagram (ERD)
 
 The **ERD** visually models the structure of the database. It shows how entities like Guests, Bookings, Payments, and Rooms relate to each other.
 
@@ -38,7 +41,7 @@ The **ERD** visually models the structure of the database. It shows how entities
 
 ---
 
-## 🔷 Phase 2: BPMN Diagram (Business Process Model)
+##  Phase 2: BPMN Diagram (Business Process Model)
 
 The **Business Process Model** illustrates how different actors interact within the system to accomplish hotel operations. Using **BPMN swimlanes**, the flow includes reservation handling, billing, auditing, and report generation.
 
@@ -52,7 +55,7 @@ The **Business Process Model** illustrates how different actors interact within 
 
 ---
 
-## 🔷 Phase 3: Table Creation (DDL)
+##  Phase 3: Table Creation (DDL)
 
 In this step, the main database structure is created using SQL `CREATE TABLE` commands. Each table is normalized, and appropriate constraints are used.
 
@@ -89,7 +92,7 @@ These table definitions ensure data integrity and support the full functionality
 
 ---
 
-## 🔷 Phase 4: Data Insertion (DML)
+##  Phase 4: Data Insertion (DML)
 
 We insert realistic and meaningful data into all tables to support testing and actual usage.
 
@@ -109,7 +112,7 @@ These data samples allow for verifying procedures, relationships, and triggers t
 
 ---
 
-## 🔷 Phase 5: Oracle Enterprise Manager (OEM) Setup
+##  Phase 5: Oracle Enterprise Manager (OEM) Setup
 
 We use **Oracle Enterprise Manager** to manage the pluggable database created for the system. OEM helps monitor user sessions, resource usage, and object access in real-time.
 
@@ -122,7 +125,7 @@ We use **Oracle Enterprise Manager** to manage the pluggable database created fo
 
 ---
 
-## 🔷 Phase 6: Enable DBMS Output
+##  Phase 6: Enable DBMS Output
 
 ```sql
 SET SERVEROUTPUT ON;
@@ -134,7 +137,7 @@ This command is essential for displaying output from `DBMS_OUTPUT.PUT_LINE` used
 
 ---
 
-## 🔷 Step 1: Add Gender Column to Guests Table
+##  Step 1: Add Gender Column to Guests Table
 
 ```sql
 BEGIN
@@ -156,7 +159,7 @@ This adds gender data for each guest and handles the "column already exists" err
 
 ---
 
-## 🔷 Step 2: Perform Sample DML Operations
+##  Step 2: Perform Sample DML Operations
 
 ```sql
 UPDATE Guests SET Contact = '0788001121' WHERE GuestID = 1;
@@ -170,7 +173,7 @@ These operations simulate real-life changes and validate that the tables are fun
 
 ---
 
-## 🔷 Step 3: Procedure to Summarize Guest Bookings and Payments
+##  Step 3: Procedure to Summarize Guest Bookings and Payments
 
 ```sql
 CREATE OR REPLACE PROCEDURE GetGuestSummary (
@@ -201,7 +204,7 @@ This provides a summarized financial and booking report for each guest.
 
 ---
 
-## 🔷 Step 4: Holidays Table
+##  Step 4: Holidays Table
 
 ```sql
 CREATE TABLE Holidays (
@@ -220,7 +223,7 @@ Used to restrict operations on holidays.
 
 ---
 
-## 🔷 Step 5: Create Audit_Log Table
+##  Step 5: Create Audit_Log Table
 
 ```sql
 CREATE TABLE Audit_Log (
@@ -239,7 +242,7 @@ This table stores operation tracking information for auditing and security.
 
 ---
 
-## 🔷 Step 6: Procedure for Audit Logging
+##  Step 6: Procedure for Audit Logging
 
 ```sql
 CREATE OR REPLACE PROCEDURE log_audit_action (
@@ -263,7 +266,7 @@ A reusable module to write logs.
 
 ---
 
-## 🔷 Step 7: Trigger for Restricting Weekday and Holiday Access
+##  Step 7: Trigger for Restricting Weekday and Holiday Access
 
 ```sql
 CREATE OR REPLACE TRIGGER trg_block_weekday_holiday_ops
@@ -296,7 +299,7 @@ This prevents unauthorized changes based on rules.
 
 ---
 
-## 🔷 Step 8: Compound Trigger for Multi-row Audit
+##  Step 8: Compound Trigger for Multi-row Audit
 
 ```sql
 CREATE OR REPLACE TRIGGER trg_multirow_audit
@@ -349,7 +352,7 @@ Used for auditing multi-row inserts efficiently.
 
 ---
 
-## 🔷 Step 9: Run Summary Procedure
+##  Step 9: Run Summary Procedure
 
 ```sql
 BEGIN
@@ -364,7 +367,7 @@ This confirms the working of your reporting procedure.
 
 ---
 
-## 🔷 Step 10: Test Trigger Blocking
+##  Step 10: Test Trigger Blocking
 
 ```sql
 BEGIN
@@ -380,7 +383,7 @@ Checks if weekday/holiday restrictions apply.
 
 ---
 
-## 🔷 Step 11: View Audit Logs
+##  Step 11: View Audit Logs
 
 ```sql
 SELECT * FROM Audit_Log ORDER BY ActionDate DESC;
