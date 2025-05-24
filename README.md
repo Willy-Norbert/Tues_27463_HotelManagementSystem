@@ -55,7 +55,44 @@ The **Business Process Model** illustrates how different actors interact within 
 ![ERD](Phase%20II/diagram.svg)
 
 ---
+# Creating a Pluggable Database (PDB) in Oracle
 
+## Step to Create a Pluggable Database (PDB)
+
+### Description
+
+creating pdb 
+
+1. Connect to the Container Database (CDB) as a privileged user:
+
+```sql
+sqlplus / as sysdba
+
+SQL> CREATE PLUGGABLE DATABASE mon_27463_irabaruta_hotelMS_db 
+2 ADMIN USER irabaruta_admin IDENTIFIED BY irabaruta 
+3 ROLES = (DBA) 
+4 FILE_NAME_CONVERT = ( 
+5 'C:\USERS\PC\DOWNLOADS\COMPRESSED\ORADATA\ORCLL\PDBSEED\', 
+6 'C:\USERS\PC\DOWNLOADS\COMPRESSED\ORADATA\ORCLL\mon_27463_irabaruta_hotelMS 
+_db\'); 
+
+```
+![ERD](Phase%20IV/createPdb.jpg)
+
+---
+
+##  Phase 5: Oracle Enterprise Manager (OEM) Setup
+
+We use **Oracle Enterprise Manager** to manage the pluggable database created for the system. OEM helps monitor user sessions, resource usage, and object access in real-time.
+
+### Setup includes:
+- Creating database with naming format: `irabaruta`
+- Assigning admin privileges
+- Managing session stats, performance, and user activities
+
+[ERD](Phase%20IV/oem.jpg)
+
+---
 ##  Phase 3: Table Creation (DDL)
 
 In this step, the main database structure is created using SQL `CREATE TABLE` commands. Each table is normalized, and appropriate constraints are used.
@@ -110,19 +147,6 @@ INSERT INTO Guests VALUES (1, 'John Doe', '0788000001', 'john@example.com');
 These data samples allow for verifying procedures, relationships, and triggers through meaningful test cases.
 
 ![Screenshot](screenshots/data_insertion.png)
-
----
-
-##  Phase 5: Oracle Enterprise Manager (OEM) Setup
-
-We use **Oracle Enterprise Manager** to manage the pluggable database created for the system. OEM helps monitor user sessions, resource usage, and object access in real-time.
-
-### Setup includes:
-- Creating database with naming format: `mon_27463_yourname_projectname_db`
-- Assigning admin privileges
-- Managing session stats, performance, and user activities
-
-![Screenshot](screenshots/oracle_enterprise_manager.png)
 
 ---
 
