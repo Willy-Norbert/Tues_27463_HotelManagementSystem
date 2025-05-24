@@ -37,7 +37,7 @@ The **ERD** visually models the structure of the database. It shows how entities
 - An **Employee** manages multiple **Bookings**
 - Guests may make multiple **Service Requests**
 
-![ERD](Phase III/erd.jpg)
+![ERD](Phase%20III/erd.jpg)
 
 ---
 
