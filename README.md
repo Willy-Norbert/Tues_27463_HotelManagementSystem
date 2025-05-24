@@ -48,10 +48,11 @@ The **Business Process Model** illustrates how different actors interact within 
 ### Actors:
 - **Guest**: Initiates booking, requests services, makes payment
 - **Receptionist**: Confirms bookings, updates records
+- **Finance officer**: Deals with payments,validate Payments
 - **Manager**: Views reports and audits
 - **System**: Automates billing and restrictions
 
-![BPMN](screenshots/bpmn_diagram.png)
+![ERD](Phase%20II/diagram.svg)
 
 ---
 
