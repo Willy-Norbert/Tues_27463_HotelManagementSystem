@@ -177,45 +177,26 @@ X
 ```
 ![table](Phase%20V/insert.jpg)
 
----
+<!-- ---
 
 These data samples allow for verifying procedures, relationships, and triggers through meaningful test cases.
 
-![Screenshot](screenshots/data_insertion.png)
+![Screenshot](screenshots/data_insertion.png) -->
 
 ---
 
-##  Phase 6: Enable DBMS Output
-
-```sql
-SET SERVEROUTPUT ON;
-```
-
-This command is essential for displaying output from `DBMS_OUTPUT.PUT_LINE` used in stored procedures and triggers.
-
-![Screenshot](screenshots/step0_enable_output.png)
-
----
+##  Phase 6: Database Interaction and Transactions
 
 ##  Step 1: Add Gender Column to Guests Table
 
 ```sql
-BEGIN
-  EXECUTE IMMEDIATE 'ALTER TABLE Guests ADD Gender VARCHAR2(10)';
-EXCEPTION
-  WHEN OTHERS THEN
-    IF SQLCODE = -01430 THEN
-      DBMS_OUTPUT.PUT_LINE('Column already exists.');
-    ELSE
-      RAISE;
-    END IF;
-END;
-/
+ALTER TABLE Guests ADD Gender VARCHAR2(10);
+
 ```
 
 This adds gender data for each guest and handles the "column already exists" error safely.
 
-![Screenshot](screenshots/step1_alter_table.png)
+![table](Phase%20VI/guest.jpg)
 
 ---
 
@@ -229,7 +210,7 @@ INSERT INTO Rooms VALUES (112, 'Single', 48000, 'Available');
 
 These operations simulate real-life changes and validate that the tables are functioning properly.
 
-![Screenshot](screenshots/step2_dml_operations.png)
+![table](Phase%20VI/guest.jpg)
 
 ---
 
@@ -260,7 +241,7 @@ END;
 
 This provides a summarized financial and booking report for each guest.
 
-![Screenshot](screenshots/step3_procedure_summary.png)
+![table](Phase%20VI/procedure.jpg)
 
 ---
 
@@ -279,8 +260,6 @@ COMMIT;
 
 Used to restrict operations on holidays.
 
-![Screenshot](screenshots/step4_create_holidays.png)
-
 ---
 
 ##  Step 5: Create Audit_Log Table
@@ -298,7 +277,7 @@ CREATE TABLE Audit_Log (
 
 This table stores operation tracking information for auditing and security.
 
-![Screenshot](screenshots/step5_create_audit_log.png)
+![table](Phase%20VI/auditLog.jpg)
 
 ---
 
@@ -319,11 +298,6 @@ BEGIN
 END;
 /
 ```
-
-A reusable module to write logs.
-
-![Screenshot](screenshots/step6_audit_procedure.png)
-
 ---
 
 ##  Step 7: Trigger for Restricting Weekday and Holiday Access
@@ -354,8 +328,10 @@ END;
 ```
 
 This prevents unauthorized changes based on rules.
+![table](Phase%20VI/triggerHoliday.jpg)
 
-![Screenshot](screenshots/step7_trigger_restriction.png)
+## test if it works 
+![table](Phase%20VI/weekdays.jpg)
 
 ---
 
@@ -408,7 +384,7 @@ END;
 
 Used for auditing multi-row inserts efficiently.
 
-![Screenshot](screenshots/step8_compound_trigger.png)
+![table](Phase%20VI/compoundTrigger.jpg)
 
 ---
 
@@ -423,7 +399,7 @@ END;
 
 This confirms the working of your reporting procedure.
 
-![Screenshot](screenshots/step9_test_summary.png)
+![table](Phase%20VI/guestTest.jpg)
 
 ---
 
@@ -439,7 +415,8 @@ END;
 
 Checks if weekday/holiday restrictions apply.
 
-![Screenshot](screenshots/step10_test_insert.png)
+![table](Phase%20VI/BlockingTrigger.jpg)
+
 
 ---
 
@@ -451,7 +428,7 @@ SELECT * FROM Audit_Log ORDER BY ActionDate DESC;
 
 Used to review all user activity and determine whether access was allowed or denied.
 
-![Screenshot](screenshots/step11_audit_log.png)
+![table](Phase%20VI/audtest.jpg)
 
 ---
 
